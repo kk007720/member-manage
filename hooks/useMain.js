@@ -88,7 +88,7 @@ export function useMain() {
       });
       queryClient.invalidateQueries({ queryKey: ['order-list'] });
     } catch (error) {
-      console.log('刪除error', error);
+      console.log('刪除error:', error);
     }
   };
 

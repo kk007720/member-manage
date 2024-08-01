@@ -1,14 +1,28 @@
 <template>
   <section class="p-2 sm:p-20">
-    <el-table v-loading="orderListIsLoading" :data="orderList" height="300" style="width: 100%">
-      <el-table-column prop="depart_date" label="日期" width="120" />
-      <el-table-column prop="name" label="姓名" />
+    <el-table
+      v-loading="orderListIsLoading"
+      :data="orderList"
+      height="300"
+      style="width: 100%"
+      resizable
+      border
+      :default-sort="{ prop: 'depart_date', order: 'ascending' }"
+      :summary-method="getSummaries"
+      show-summary
+    >
+      <el-table-column prop="depart_date" sortable label="日期" width="120" />
+      <el-table-column prop="name" label="姓名">
+        <template #default="scope">
+          <el-tag>{{ scope.row.name }}</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column prop="mobile" label="手機" />
       <el-table-column prop="content" label="項目" />
       <el-table-column prop="price" label="價格" />
       <el-table-column width="100">
         <template #default="scope">
-          <el-button type="primary" round color="#FFCAC5" @click="deleteOrder(scope.row.id)"
+          <el-button size="small" type="danger" round @click="deleteOrder(scope.row.id)"
             >刪除</el-button
           >
         </template>
@@ -67,7 +81,7 @@ import { useMain } from '../hooks/useMain';
 const { state, actions } = useMain();
 
 const { formInfo, drawer, orderList, orderListIsLoading } = state;
-const { cancelClick, confirmClick, deleteOrder } = actions;
+const { cancelClick, confirmClick, deleteOrder, getSummaries } = actions;
 </script>
 
 <style scoped>

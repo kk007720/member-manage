@@ -3,13 +3,6 @@ import { ElMessageBox, ElMessage } from 'element-plus';
 import { useQuery, useQueryClient } from '@tanstack/vue-query';
 import { OrderApi } from '@/api/orderApi';
 
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-  'https://lrdcvyjbgukvmwazbgdq.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxyZGN2eWpiZ3Vrdm13YXpiZ2RxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjIzOTMzNzQsImV4cCI6MjAzNzk2OTM3NH0.YdRleij6RHHMRg2A2gVtgF9cnxque_Lw2YYIb7niUok'
-);
-
 export function useMain() {
   const formInfo = reactive({
     name: '',
@@ -92,8 +85,48 @@ export function useMain() {
     }
   };
 
+  //計算總和
+  const getSummaries = (param) => {
+    const { columns, data } = param;
+    const sums = [];
+
+    columns.forEach((column, index) => {
+      if (index === 0) {
+        sums[index] = h('div', { style: { textDecoration: 'underline' } }, ['總計']);
+        return;
+      }
+
+      if (column.property === 'price') {
+        const values = data.map((item) => Number(item[column.property]));
+        if (!values.every((value) => Number.isNaN(value))) {
+          const total = values.reduce((prev, curr) => {
+            const value = Number(curr);
+            if (!Number.isNaN(value)) {
+              return prev + curr;
+            } else {
+              return prev;
+            }
+          }, 0);
+
+          const formattedTotal = new Intl.NumberFormat('zh-TW', {
+            style: 'currency',
+            currency: 'TWD',
+            minimumFractionDigits: 0
+          }).format(total);
+
+          sums[index] = formattedTotal;
+        } else {
+          sums[index] = 'N/A';
+        }
+      } else {
+        sums[index] = '';
+      }
+    });
+    return sums;
+  };
+
   return {
     state: { formInfo, drawer, orderList, orderListIsLoading },
-    actions: { cancelClick, confirmClick, deleteOrder }
+    actions: { cancelClick, confirmClick, deleteOrder, getSummaries }
   };
 }

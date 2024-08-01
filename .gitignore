@@ -22,3 +22,6 @@ logs
 .env
 .env.*
 !.env.example
+
+.prettierrc
+settings.json

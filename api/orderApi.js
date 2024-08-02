@@ -12,6 +12,19 @@ export const OrderApi = {
       throw error;
     }
   },
+
+  async fetchSpecificOrder(orderId) {
+    const supabase = useSupabase();
+    try {
+      const response = await supabase.from('order').select('*').eq('id', orderId);
+      if (response.error) throw error;
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching specific order:', error);
+      throw error;
+    }
+  },
+
   async addOrder(order) {
     const supabase = useSupabase();
 
@@ -22,7 +35,8 @@ export const OrderApi = {
           mobile: order.mobile,
           content: order.content,
           price: order.price,
-          depart_date: order.depart_date
+          depart_date: order.depart_date,
+          address: order.address
         }
       ]);
       if (error) throw error;
@@ -50,7 +64,12 @@ export const OrderApi = {
     try {
       const { data, error } = await supabase.from('order').delete().eq('id', orderId);
 
-      if (error) throw error;
+      const { data: situationData, error: situationError } = await supabase
+        .from('situation')
+        .delete()
+        .eq('order_id', orderId);
+
+      if (error || situationError) throw error;
       return data;
     } catch (error) {
       console.error('Error deleting order:', error);

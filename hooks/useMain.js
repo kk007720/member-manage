@@ -1,4 +1,5 @@
 import { ref, reactive, watchEffect } from 'vue';
+import { useRouter } from 'vue-router';
 import { ElMessageBox, ElMessage } from 'element-plus';
 import { useQuery, useQueryClient } from '@tanstack/vue-query';
 import { OrderApi } from '@/api/orderApi';
@@ -9,7 +10,8 @@ export function useMain() {
     mobile: '',
     content: '',
     price: '',
-    depart_date: ''
+    depart_date: '',
+    address: ''
   });
 
   const initFormInfo = {
@@ -17,12 +19,18 @@ export function useMain() {
     mobile: '',
     content: '',
     price: '',
-    depart_date: ''
+    depart_date: '',
+    address: ''
   };
 
   const drawer = ref(false);
 
   const queryClient = useQueryClient();
+  const router = useRouter();
+
+  const showOrder = (id) => {
+    router.push(`/order/${id}`);
+  };
 
   const {
     isPending,
@@ -125,8 +133,17 @@ export function useMain() {
     return sums;
   };
 
+  const formatPrice = (value) => {
+    return new Intl.NumberFormat('zh-TW', {
+      style: 'currency',
+      currency: 'TWD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(value);
+  };
+
   return {
     state: { formInfo, drawer, orderList, orderListIsLoading },
-    actions: { cancelClick, confirmClick, deleteOrder, getSummaries }
+    actions: { cancelClick, confirmClick, deleteOrder, getSummaries, showOrder, formatPrice }
   };
 }

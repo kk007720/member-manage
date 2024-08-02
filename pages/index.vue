@@ -1,9 +1,9 @@
 <template>
-  <section class="p-2 sm:p-20">
+  <section class="p-2 sm:p-16">
     <el-table
       v-loading="orderListIsLoading"
       :data="orderList"
-      height="300"
+      height="450"
       style="width: 100%"
       resizable
       border
@@ -18,12 +18,23 @@
         </template>
       </el-table-column>
       <el-table-column prop="mobile" label="手機" />
-      <el-table-column prop="content" label="項目" />
-      <el-table-column prop="price" label="價格" />
-      <el-table-column width="100">
+      <el-table-column prop="address" show-overflow-tooltip label="地址" />
+      <el-table-column prop="content" label="項目" width="200" />
+      <el-table-column prop="price" sortable label="價格">
         <template #default="scope">
-          <el-button size="small" type="danger" round @click="deleteOrder(scope.row.id)"
-            >刪除</el-button
+          {{ formatPrice(scope.row.price) }}
+        </template>
+      </el-table-column>
+
+      <el-table-column width="150" fixed="right">
+        <template #default="scope">
+          <div class="flex flex-row">
+            <el-button size="small" type="primary" round @click="showOrder(scope.row.id)"
+              >查看</el-button
+            >
+            <el-button size="small" type="danger" round @click="deleteOrder(scope.row.id)"
+              >刪除</el-button
+            ></div
           >
         </template>
       </el-table-column>
@@ -48,10 +59,13 @@
             <el-input v-model="formInfo.depart_date" type="date" />
           </el-form-item>
           <el-form-item label="手機" label-position="top">
-            <el-input v-model="formInfo.mobile" />
+            <el-input v-model="formInfo.mobile" show-word-limit maxlength="10" />
           </el-form-item>
           <el-form-item label="價錢" label-position="top">
             <el-input v-model="formInfo.price" />
+          </el-form-item>
+          <el-form-item label="地址" label-position="top">
+            <el-input v-model="formInfo.address" />
           </el-form-item>
           <el-form-item label="項目" label-position="top">
             <el-input
@@ -81,7 +95,7 @@ import { useMain } from '../hooks/useMain';
 const { state, actions } = useMain();
 
 const { formInfo, drawer, orderList, orderListIsLoading } = state;
-const { cancelClick, confirmClick, deleteOrder, getSummaries } = actions;
+const { cancelClick, confirmClick, deleteOrder, getSummaries, showOrder, formatPrice } = actions;
 </script>
 
 <style scoped>

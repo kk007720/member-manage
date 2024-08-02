@@ -29,22 +29,16 @@
       <el-table-column width="150" fixed="right">
         <template #default="scope">
           <div class="flex flex-row">
-            <el-button size="small" type="primary" round @click="showOrder(scope.row.id)"
-              >查看</el-button
-            >
-            <el-button size="small" type="danger" round @click="deleteOrder(scope.row.id)"
-              >刪除</el-button
-            ></div
-          >
+            <el-button size="small" type="primary" round @click="showOrder(scope.row.id)">查看</el-button>
+            <el-button size="small" type="danger" round @click="deleteOrder(scope.row.id)">刪除</el-button>
+          </div>
         </template>
       </el-table-column>
     </el-table>
 
     <div class="mt-5 text-center">
-      <el-button type="primary" round color="#00353a" @click="drawer = true"
-        >輸入預約</el-button
-      ></div
-    >
+      <el-button type="primary" round color="#00353a" @click="drawer = true">輸入預約</el-button>
+    </div>
     <!-- 輸入抽屜 -->
     <el-drawer v-model="drawer" class="min-w-[20rem]">
       <template #header>

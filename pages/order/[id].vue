@@ -94,7 +94,6 @@
 
       <div class="mt-4 flex flex-row justify-center gap-2">
         <el-button plain @click="$router.go(-1)">回上一頁</el-button>
-
         <el-button type="primary" color="#00353a" @click="updateSituation">送出</el-button>
       </div>
     </div>

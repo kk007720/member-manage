@@ -1,0 +1,9 @@
+{
+  "build": {
+    "commands": {
+      "build": "nuxt build",
+      "dev": "nuxt dev"
+    },
+    "outputDirectory": ".output"
+  }
+}

@@ -26,3 +26,4 @@ logs
 .prettierrc
 settings.json
 .vercel
+.env*.local

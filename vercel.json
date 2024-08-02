@@ -1,4 +1,5 @@
 {
   "buildCommand": "nuxt build",
-  "outputDirectory": ".output"
+  "outputDirectory": ".output",
+  "routes": [{ "src": "/(.*)", "dest": "/" }]
 }

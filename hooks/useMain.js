@@ -1,7 +1,7 @@
 import { ref, reactive, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessageBox, ElMessage } from 'element-plus';
-import { useQuery, useQueryClient } from '@tanstack/vue-query';
+import { useQuery, useQueryClient, useMutation } from '@tanstack/vue-query';
 import { OrderApi } from '@/api/orderApi';
 
 export function useMain() {
@@ -37,10 +37,32 @@ export function useMain() {
     isLoading: orderListIsLoading,
     isError,
     data: orderList,
-    error
+    error,
+    status, //目前query的狀態
+    fetchStatus //紀錄api抓的狀態
   } = useQuery({
     queryKey: ['order-list'],
-    queryFn: OrderApi.fetchOrders
+    queryFn: OrderApi.fetchOrders,
+    refetchOnWindowFocus: true,
+    // refetchInterval: 3000, //每3秒抓一次
+    staleTime: 10000
+    // enabled: true
+  });
+
+  const mutation = useMutation({
+    mutationFn: (newOrder) => OrderApi.addOrder(newOrder),
+    onSuccess: () => {
+      ElMessage({
+        message: '新增成功!',
+        type: 'success'
+      });
+      drawer.value = false;
+      Object.assign(formInfo, initFormInfo);
+      queryClient.invalidateQueries({ queryKey: ['order-list'] });
+    },
+    onError: (error) => {
+      console.error('Error adding order:', error);
+    }
   });
 
   function cancelClick() {
@@ -57,16 +79,10 @@ export function useMain() {
         overflow: true
       });
 
-      drawer.value = false;
       console.log('**新增formInfo**', formInfo);
 
-      await OrderApi.addOrder(formInfo);
-      ElMessage({
-        message: '新增成功!',
-        type: 'success'
-      });
-      Object.assign(formInfo, initFormInfo);
-      queryClient.invalidateQueries({ queryKey: ['order-list'] });
+      // 使用 mutation.mutate 提交表单数据
+      mutation.mutate(formInfo);
     } catch (error) {
       console.error('Error in confirmClick:', error);
     }

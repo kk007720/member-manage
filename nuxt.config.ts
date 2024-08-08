@@ -22,11 +22,5 @@ export default defineNuxtConfig({
       supabaseUrl: process.env.NUXT_SUPABASE_URL,
       supabaseAnonKey: process.env.NUXT_SUPABASE_KEY
     }
-  },
-  nitro: {
-    preset: 'vercel'
-  },
-  build: {
-    transpile: ['@supabase/supabase-js']
   }
 });

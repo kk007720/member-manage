@@ -5,8 +5,8 @@
       <p>made by chia ming , kuo</p>
     </div>
   </div>
-  <Card v-model="modelParent"></Card>
-  <el-button type="primary" @click="handleSubmit">送出</el-button>
+  <!-- <Card v-model="modelParent"></Card>
+  <el-button type="primary" @click="handleSubmit">送出</el-button> -->
 </template>
 
 <script setup>

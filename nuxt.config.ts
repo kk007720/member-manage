@@ -5,6 +5,7 @@ export default defineNuxtConfig({
       viewport: 'width=device-width, initial-scale=1'
     }
   },
+  modules: ['@vueuse/nuxt'],
   ssr: true,
   plugins: ['~/plugins/element-plus.js', '~/plugins/vue-query', '~/plugins/supabase.js'],
   compatibilityDate: '2024-07-29',
@@ -21,5 +22,8 @@ export default defineNuxtConfig({
       supabaseUrl: process.env.NUXT_SUPABASE_URL,
       supabaseAnonKey: process.env.NUXT_SUPABASE_KEY
     }
+  },
+  nitro: {
+    preset: 'vercel'
   }
 });

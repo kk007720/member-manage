@@ -92,6 +92,4 @@ const { formInfo, drawer, orderList, orderListIsLoading } = state;
 const { cancelClick, confirmClick, deleteOrder, getSummaries, showOrder, formatPrice } = actions;
 </script>
 
-<style scoped>
-/* Home Page 的樣式 */
-</style>
+<style scoped></style>
